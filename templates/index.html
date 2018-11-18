@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+  <table class="table">
+    <tr class="row">
+      <th class="col-2">年級</th>
+      <th class="col-5">必修</th>
+      <th class="col-5">選修</th>
+    </tr>
+
+    <tr class="row">
+      <th class="col-2">大一</th>
+      <td class="col-5">
+        {% for c in data[0][1] %}
+        <button type="button" class="btn btn-outline-primary m-1 req01" data-toggle="button" aria-pressed="false">
+          {{c}}
+        </button>
+        {% endfor %}
+        <button type="button" id="selectAll01" class="btn btn-outline-success m-1">全選</button>
+      </td>
+      <td class="col-5">
+        {% for c in data[1][1] %}
+        <button type="button" class="btn btn-outline-primary m-1" data-toggle="button" aria-pressed="false">
+          {{c}}
+        </button>
+        {% endfor %}
+      </td>
+    </tr>
+
+    <tr class="row">
+      <th class="col-2">大二</th>
+      <td class="col-5">
+        {% for c in data[0][2] %}
+        <button type="button" class="btn btn-outline-primary m-1 req02" data-toggle="button" aria-pressed="false">
+          {{c}}
+        </button>
+        {% endfor %}
+        <button type="button" id="selectAll02" class="btn btn-outline-success m-1">全選</button>
+      </td>
+      <td class="col-5">
+        {% for c in data[1][2] %}
+        <button type="button" class="btn btn-outline-primary m-1" data-toggle="button" aria-pressed="false">
+          {{c}}
+        </button>
+        {% endfor %}
+      </td>
+    </tr>
+
+    <tr class="row">
+      <th class="col-2">大三</th>
+      <td class="col-5">
+        {% for c in data[0][3] %}
+        <button type="button" class="btn btn-outline-primary m-1 req03" data-toggle="button" aria-pressed="false">
+          {{c}}
+        </button>
+        {% endfor %}
+        <button type="button" id="selectAll03" class="btn btn-outline-success m-1">全選</button>
+      </td>
+      <td class="col-5">
+        {% for c in data[1][3] %}
+        <button type="button" class="btn btn-outline-primary m-1" data-toggle="button" aria-pressed="false">
+          {{c}}
+        </button>
+        {% endfor %}
+      </td>
+    </tr>
+
+    <tr class="row">
+      <th class="col-2">大四</th>
+      <td class="col-5">
+        {% for c in data[0][4] %}
+        <button type="button" class="btn btn-outline-primary m-1 req04" data-toggle="button" aria-pressed="false">
+          {{c}}
+        </button>
+        {% endfor %}
+        <button type="button" id="selectAll04" class="btn btn-outline-success m-1">全選</button>
+      </td>
+      <td class="col-5">
+        {% for c in data[1][4] %}
+        <button type="button" class="btn btn-outline-primary m-1" data-toggle="button" aria-pressed="false">
+          {{c}}
+        </button>
+        {% endfor %}
+      </td>
+    </tr>
+
+    <tr class="row">
+      <th class="col-2">通識</th>
+      <td class="col-5">
+        {% for c in data[0][0] %}
+        <button type="button" class="btn btn-outline-primary m-1" data-toggle="button" aria-pressed="false">
+          {{c}}
+        </button>
+        {% endfor %}
+      </td>
+      <td class="col-5">
+        <div class="row">
+          <div class="form-group mx-sm-3 mb-2">
+            <input type="text" class="form-control" id="classInput" placeholder="通識課程名稱">
+          </div>
+          <button id="findbtn" class="btn btn-outline-info mb-2">尋找課程</button>
+        </div>
+
+      </td>
+    </tr>
+  </table>
+</div>
+
+<script>
+  $(function() {
+    $("#selectAll01").click(function() {
+      $(".req01").click();
+    });
+    $("#selectAll02").click(function() {
+      $(".req02").click();
+    });
+    $("#selectAll03").click(function() {
+      $(".req03").click();
+    });
+    $("#selectAll04").click(function() {
+      $(".req04").click();
+    });
+    $('#findbtn').on('click', function() {
+      $.ajax({
+        url: '/ajaxFindClass',
+        data: {
+          text: $("#classInput").val()
+        },
+        success: function(data) {
+          console.log(data)
+          alert(data)
+        }
+      });
+    });
+  });
+</script>
+{% endblock content %}
