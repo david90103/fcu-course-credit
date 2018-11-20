@@ -27,10 +27,12 @@ def getClassList():
 def ajaxFindClass():
     target = request.args.get('text')
     data = database.findGeneral(target)
-    # res = {'text': str(data)}
+    if len(data) > 0:
+        res = {'content': data}
+    else:
+        res = {'content': None}
     # print (res)
-    # return json.dumps(res), 200, 'application/json'
-    return str(data)
+    return json.dumps(res)
 
 
 @app.route('/')

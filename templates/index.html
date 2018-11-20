@@ -94,13 +94,16 @@
         {% endfor %}
       </td>
       <td class="col-5">
-        <div class="row">
-          <div class="form-group mx-sm-3 mb-2">
-            <input type="text" class="form-control" id="classInput" placeholder="通識課程名稱">
+        <div class="row input-group my-1">
+          <input type="text" class="form-control" id="classInput" placeholder="通識課程名稱">
+          <div class="input-group-append">
+            <button id="findbtn" class="btn btn-outline-info mb-2">尋找課程</button>
           </div>
-          <button id="findbtn" class="btn btn-outline-info mb-2">尋找課程</button>
         </div>
-
+        <div class="row">
+          <div id="resultClass">
+          </div>
+        </div>
       </td>
     </tr>
   </table>
@@ -108,27 +111,39 @@
 
 <script>
   $(function() {
-    $("#selectAll01").click(function() {
+    $("#selectAll01").click(() => {
       $(".req01").click();
     });
-    $("#selectAll02").click(function() {
+    $("#selectAll02").click(() => {
       $(".req02").click();
     });
-    $("#selectAll03").click(function() {
+    $("#selectAll03").click(() => {
       $(".req03").click();
     });
-    $("#selectAll04").click(function() {
+    $("#selectAll04").click(() => {
       $(".req04").click();
     });
-    $('#findbtn').on('click', function() {
+    $('#findbtn').on('click', () => {
       $.ajax({
         url: '/ajaxFindClass',
         data: {
           text: $("#classInput").val()
         },
-        success: function(data) {
-          console.log(data)
-          alert(data)
+        success: (d) => {
+          let data = JSON.parse(d);
+          if (!data['content']) alert('查無課程!');
+          else {
+            for (let i = 0; i < data['content'].length; i++) {
+              let exists = false;
+              let content = data['content'][i][0];
+              var buttons = $('<button type="button" class="btn btn-outline-primary m-1" data-toggle="button" aria-pressed="false">' +
+                content + '</button>');
+              $('#resultClass').children('button').each((index, elem) => {
+                if ($(elem).text() === content) exists = true;
+              })
+              if (!exists) buttons.appendTo('#resultClass');
+            }
+          }
         }
       });
     });
