@@ -6,6 +6,19 @@ def clean(str):
     return re.sub("[\s+\.\!\/_,$%^*(+\"\')]+|[+——()?【】“”！，。？、~@#￥%……&*（）]+', ", "",  str)
 
 
+def getDeptList():
+    conn = sqlite3.connect('course.db')
+    c = conn.cursor()
+    r = c.execute("select distinct unit, dept from course").fetchall()
+    conn.close()
+    result = {}
+    for c in r:
+        if not c[1] in result:
+            result[c[1]] = []
+        result[c[1]].append(c[0])
+    return (result)
+
+
 def getClassList(unitName):
     conn = sqlite3.connect('course.db')
     c = conn.cursor()
@@ -16,6 +29,7 @@ def getClassList(unitName):
 
 
 def findGeneral(className):
+    print(className)
     if clean(className) == '':
         return ()
     conn = sqlite3.connect('course.db')
