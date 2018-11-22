@@ -107,6 +107,14 @@
       </td>
     </tr>
   </table>
+  <div class="row text-center">
+    <button class="btn btn-lg btn-success mx-auto m-3" id="chartBtn">統計學分</button>
+  </div>
+  <div class="card w-75 mx-auto m-3" id="chart">
+    <div class="card-body">
+      <p class="card-text text-center">資訊系 畢業學分</p>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -147,6 +155,58 @@
         }
       });
     });
+    $("#chartBtn").click(() => {
+      buildChart();
+      $.smoothScroll({
+        scrollTarget: '#footer'
+      });
+    });
   });
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js" integrity="sha256-MZo5XY1Ah7Z2Aui4/alkfeiq3CopMdV/bbkc/Sh41+s=" crossorigin="anonymous"></script>
+<script>
+  function buildChart() {
+    if ($('#chart canvas').length == 0) {
+      let c = $('<canvas id="myChart"></canvas>');
+      c.appendTo('#chart');
+    }
+    var ctx = document.getElementById("myChart").getContext('2d');
+    var myChart = new Chart(ctx, {
+      type: 'horizontalBar',
+      data: {
+        labels: ["系必修", "學程必修", "學程選修", "系選修", "外系學分", "通識"],
+        datasets: [{
+          data: [12, 19, 3, 5, 8, 4, 12],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+          ],
+          borderColor: [
+            'rgba(255,99,132,1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
+      }
+    });
+  }
 </script>
 {% endblock content %}
