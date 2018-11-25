@@ -29,7 +29,6 @@ def getClassList(unitName):
 
 
 def findGeneral(className):
-    print(className)
     if clean(className) == '':
         return ()
     conn = sqlite3.connect('course.db')

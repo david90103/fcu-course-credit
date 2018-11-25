@@ -20,7 +20,7 @@ def getClassList():
                 required[c[4]].append(c[0])
             else:
                 elective[c[4]].append(c[0])
-    return render_template('courseList.html', data=[required, elective])
+    return render_template('courseList.html', data=[required, elective], dept=request.args.get('unit'))
 
 
 @app.route('/ajax/findClass')
