@@ -33,8 +33,18 @@
 </div>
 <script>
   $(function() {
+    jQuery.expr[':'].regex = function(elem, index, match) {
+      var regex = new RegExp(match[3]),
+        $elem = $(elem);
+      return regex.test($elem.attr('class')) || regex.test($elem.attr('id'));
+    };
     $("#findbtn").click(() => {
-      let target = '#' + $("#unitInput").val();
+      let temp = $("#unitInput").val();
+      let target = ".*";
+      temp.split("").forEach((e) => {
+        target += (e + ".*");
+      });
+      target = 'button:regex(' + target + ')';
       if ($(target).length === 0) {
         alert("科系不存在");
       } else {
