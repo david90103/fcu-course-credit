@@ -1,8 +1,15 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
+from util import worm
 import json
 import database
 
 app = Flask(__name__)
+
+
+@app.route('/nidLogin', methods=['POST'])
+def nidLogin():
+    result = worm(request.form.get('nid_acc', None), request.form.get('nid_pwd', None))
+    return render_template('nidresult.html', data=database.nidGetCridits(result))
 
 
 @app.route('/getClassList', methods=['GET'])
@@ -32,6 +39,33 @@ def ajaxFindClass():
     else:
         res = {'content': None}
     return json.dumps(res)
+
+
+@app.route('/ajax/getCredits')
+def ajaxGetCredits():
+    target = request.args.get('name')
+    data = database.getUnitCredits(target)
+    if len(data) > 0:
+        res = {'content': data}
+    else:
+        res = {'content': None}
+    return json.dumps(res)
+
+
+@app.route('/ajax/searchTeacher')
+def ajaxSearchTeacher():
+    target = request.args.get('name')
+    data = database.searchTeacher(target)
+    if len(data) > 0:
+        res = {'content': data}
+    else:
+        res = {'content': None}
+    return json.dumps(res)
+
+
+@app.route('/teacher')
+def teacherPage():
+    return render_template('teacher.html')
 
 
 @app.route('/')

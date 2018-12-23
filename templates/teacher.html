@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+  <div class="row py-5 my-4"></div>
+  <div class=" text-center">
+    <h1>逢甲大學教師評價查詢</h1>
+    <div class="row input-group my-5 mx-auto w-75">
+      <input type="text" class="form-control" id="nameInput" placeholder="請輸入教師名稱">
+      <div class="input-group-append">
+        <button id="findbtn" class="btn btn-outline-primary">查詢評價</button>
+      </div>
+    </div>
+  </div>
+  <ul id="result">
+    <!-- TODO: feedback from user  -->
+  </ul>
+  <div class="row py-5 my-5"></div>
+</div>
+<script>
+  $(function() {
+    $("footer").hide();
+    $("#findbtn").click(() => {
+      $.ajax({
+        url: '/ajax/searchTeacher',
+        data: {
+          name: $('#nameInput').val()
+        },
+        success: (d) => {
+          let result = JSON.parse(d)["content"];
+          $('#result').empty();
+          result.forEach((elem, index, array) => {
+            let temp =
+              `<li>
+              <div class="card mb-3">
+                <div class="card-body">
+                  <h5 class="card-title"><strong>${elem[0]}</strong></h5>
+                  <p class="card-subtitle mb-2 text-muted">${elem[1]}</p>
+                  <p class="card-text">${elem[2]}</p>
+                  <p class="card-text">${elem[3]}</p>
+                  <p class="card-text">${elem[4]}</p>
+                </div>
+              </div>`
+            $('#result').append(temp);
+          });
+        }
+      });
+    })
+  });
+</script>
+<style>
+  ul {
+    list-style-type: none;
+  }
+</style>
+{% endblock content %}

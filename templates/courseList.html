@@ -159,15 +159,24 @@
       });
     });
     $("#chartBtn").click(() => {
+      let classes = [];
       $(".table button").each((i, elem) => {
         if ($(elem).attr("aria-pressed") === "true") {
-          console.log($(elem).text());
+          classes.push($(elem).text());
         }
       });
-      buildChart();
-      $.smoothScroll({
-        scrollTarget: '#chart',
-        offset: -150
+      $.ajax({
+        url: '/ajax/getCredits',
+        data: {
+          name: $('h2').text().split(' ')[0]
+        },
+        success: (d) => {
+          buildChart(JSON.parse(d)["content"].map(Number));
+          $.smoothScroll({
+            scrollTarget: '#chart',
+            offset: -150
+          });
+        }
       });
     });
   });
@@ -175,7 +184,8 @@
 
 <script src="static/js/Chart.bundle.min.js"></script>
 <script>
-  function buildChart() {
+  function buildChart(grad_credits) {
+
     if ($('#chart canvas').length == 0) {
       let c = $('<canvas id="creditChart"></canvas>');
       c.appendTo('#chart');
@@ -184,14 +194,14 @@
     var creditChart = new Chart(ctx, {
       type: 'horizontalBar',
       data: {
-        labels: ["系必修", "學程必修", "學程選修", "系選修", "外系學分", "通識"],
+        labels: ["必修", "選修", "外系學分", "通識必修", "通識選修"],
         datasets: [{
           label: '已修習',
-          data: [40, 12, 10, 3, 5, 14],
+          data: [1, 1, 1, 1, 1], // TODO: input data
           backgroundColor: "rgba(54, 162, 235, 0.6)"
         }, {
           label: '畢業學分',
-          data: [53 - 40, 16 - 12, 15 - 10, 7 - 3, 9 - 5, 28 - 14],
+          data: [grad_credits[0] - 1, grad_credits[1] - 1, grad_credits[2] - 1, grad_credits[3] - 1, grad_credits[4] - 1],
           backgroundColor: "rgba(150, 150, 150, 0.2)"
         }]
       },

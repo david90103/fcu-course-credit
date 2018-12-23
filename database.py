@@ -32,6 +32,28 @@ def getClassList(unitName):
     return (result)
 
 
+def getUnitCredits(unitName):
+    unitName = clean(unitName)
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+    result = c.execute("select Department_Compulsory, Department_Electuve, Other_Department_Electuve, \
+                    General_Compulsory, General_Elective from department where department.Department == ?",
+                       (unitName,)).fetchall()[0]
+    conn.close()
+    return (result)
+
+
+def nidGetCridits(courses):
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+    result = {"通識基礎": [], "院系必修": [], "本系專業選修": [], "非本系專業選修": [], "通識選修": []}
+    for key, value in courses.items():
+        for course in value:
+            result[key].append(c.execute("select distinct sub_name, sub_credit from course where sub_name == ?",
+                                         (course,)).fetchall()[0])
+    return result
+
+
 def findGeneral(className):
     className = clean(className)
     if className == '':
@@ -46,3 +68,19 @@ def findGeneral(className):
                 like '%" + formatName + "%' and (unit == '通識核心' or unit == '外語文選修')").fetchall()
     conn.close()
     return result
+
+
+def searchTeacher(name):
+    name = clean(name)
+    if name == '':
+        return ()
+    # generate target for like statement in sql
+    formatName = '%'
+    for c in list(name):
+        formatName += c + '%'
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+    result = c.execute(
+        "select teacher, star, a, b, c from teacher where teacher.teacher like '%" + formatName + "%'").fetchall()
+    conn.close()
+    return (result)

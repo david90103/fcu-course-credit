@@ -1,19 +1,27 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container">
-  <header class="m-5 p-3"></header>
+  <header class="m-2 p-3"></header>
   <div class="jumbotron jumbotron-fluid">
     <div class="container">
       <h1 class="display-4">Feng Chia University Course Credit</h1>
-      <p class="lead ml-1"><strong>Please select your department</strong></p>
+      <p class="lead ml-1"><strong>Please select your department or login with NID</strong></p>
     </div>
   </div>
-  <div class="row input-group my-5 mx-auto w-75">
+  <div class="row input-group my-3 mx-auto w-75">
     <input type="text" class="form-control" id="unitInput" placeholder="請輸入科系名稱">
     <div class="input-group-append">
       <button id="findbtn" class="btn btn-outline-info">查詢科系</button>
     </div>
   </div>
+  <p class="col-12 text-center">OR</p>
+  <form class="row input-group my-3 mx-auto w-75" action="/nidLogin" method="post">
+    <div class="input-group">
+      <input type="text" class="form-control" name="nid_acc" placeholder="學號">
+      <input type="password" class="form-control" name="nid_pwd" placeholder="NID密碼">
+      <button id="submit" class="form-control btn btn-outline-info">NID登入</button>
+    </div>
+  </form>
   <div class="row" id="unitTable">
     {% for key, value in data.items() %}
     <div class="card m-2 row">
@@ -22,7 +30,7 @@
           <h5 class="card-text text-info">{{ key }}</h5>
         </div>
         {% for i in value %}
-        <button class=" btn btn-outline-dark m-1 unitRequest" id="{{ i }}">
+        <button class=" btn btn-outline-secondary m-1 unitRequest" id="{{ i }}">
           {{ i }}
         </button>
         {% endfor %}
@@ -52,7 +60,7 @@
           scrollTarget: target,
           offset: -150
         });
-        $(target).removeClass("btn-outline-dark");
+        $(target).removeClass("btn-outline-secondary");
         $(target).addClass("btn-primary");
       }
     });
