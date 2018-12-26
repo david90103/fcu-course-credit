@@ -11,7 +11,7 @@
   <div class="row input-group my-3 mx-auto w-75">
     <input type="text" class="form-control" id="unitInput" placeholder="請輸入科系名稱">
     <div class="input-group-append">
-      <button id="findbtn" class="btn btn-outline-info">查詢科系</button>
+      <button id="findbtn" class="btn btn-outline-primary">查詢科系</button>
     </div>
   </div>
   <p class="col-12 text-center">OR</p>
@@ -19,7 +19,7 @@
     <div class="input-group">
       <input type="text" class="form-control" name="nid_acc" placeholder="學號">
       <input type="password" class="form-control" name="nid_pwd" placeholder="NID密碼">
-      <button id="submit" class="form-control btn btn-outline-info">NID登入</button>
+      <button id="submit" class="form-control btn btn-outline-primary">NID登入</button>
     </div>
   </form>
   <div class="row" id="unitTable">
@@ -27,7 +27,7 @@
     <div class="card m-2 row">
       <div class="card-body">
         <div class="card-title">
-          <h5 class="card-text text-info">{{ key }}</h5>
+          <h5 class="card-text text-primary">{{ key }}</h5>
         </div>
         {% for i in value %}
         <button class=" btn btn-outline-secondary m-1 unitRequest" id="{{ i }}">

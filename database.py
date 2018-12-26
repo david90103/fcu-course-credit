@@ -81,6 +81,11 @@ def searchTeacher(name):
     conn = sqlite3.connect('database.db')
     c = conn.cursor()
     result = c.execute(
-        "select teacher, star, a, b, c from teacher where teacher.teacher like '%" + formatName + "%'").fetchall()
+        "select distinct comments.teacher, description from comments left join teacher on teacher.teacher = comments.teacher where teacher.teacher like '%" + formatName + "%'").fetchall()
     conn.close()
-    return (result)
+    result_dict = {}
+    for elem in result:
+        if not elem[0] in result_dict:
+            result_dict[elem[0]] = []
+        result_dict[elem[0]].append(elem[1])
+    return (result_dict)

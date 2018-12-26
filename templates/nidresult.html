@@ -68,7 +68,7 @@
         $.ajax({
           url: '/ajax/getCredits',
           data: {
-            name: $('h2').text().sppt(' ')[0]
+            name: $('h2').text().split(' ')[0]
           },
           success: (d) => {
             buildChart(JSON.parse(d)["content"].map(Number));
