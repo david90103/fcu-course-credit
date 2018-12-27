@@ -49,7 +49,7 @@ def ajaxGetCredits():
     
     f = open('h.txt','w')
     for i in temp:
-        print(temp)
+        #print(temp)
         f.write(i)
     f.close()
     if len(data) > 0:
