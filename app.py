@@ -45,13 +45,26 @@ def ajaxFindClass():
 def ajaxGetCredits():
     target = request.args.get('name')
     data = database.getUnitCredits(target)
-    temp = request.args.getlist('classes[]')
+    temp = request.args.getlist('primary[]')
+    temp2 = request.args.getlist('elective[]')
+    temp3 = request.args.getlist('Gen[]')
     
-    f = open('h.txt','w')
+    f = open('primary.txt','w')
+    f2= open('elective.txt','w')
+    f3= open('Gen.txt','w')
     for i in temp:
         #print(temp)
         f.write(i)
     f.close()
+    for j in temp2:
+        #print(temp)
+        f2.write(j)
+    f2.close()
+    for k in temp3:
+        #print(temp)
+        f3.write(k)
+    f3.close()
+    
     if len(data) > 0:
         res = {'content': data}
     else:
