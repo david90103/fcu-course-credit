@@ -45,6 +45,13 @@ def ajaxFindClass():
 def ajaxGetCredits():
     target = request.args.get('name')
     data = database.getUnitCredits(target)
+    temp = request.args.getlist('classes[]')
+    
+    f = open('h.txt','w')
+    for i in temp:
+        print(temp)
+        f.write(i)
+    f.close()
     if len(data) > 0:
         res = {'content': data}
     else:
