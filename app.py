@@ -45,26 +45,28 @@ def ajaxFindClass():
 def ajaxGetCredits():
     target = request.args.get('name')
     data = database.getUnitCredits(target)
+    
     temp = request.args.getlist('primary[]')
     temp2 = request.args.getlist('elective[]')
     temp3 = request.args.getlist('Gen[]')
-    
-    f = open('primary.txt','w')
-    f2= open('elective.txt','w')
-    f3= open('Gen.txt','w')
-    for i in temp:
-        #print(temp)
-        f.write(i)
-    f.close()
-    for j in temp2:
-        #print(temp)
-        f2.write(j)
-    f2.close()
-    for k in temp3:
-        #print(temp)
-        f3.write(k)
-    f3.close()
-    
+    primaryCredits = 0
+    electiveCredits = 0
+    GenCredits = 0
+    for i in range(len(temp)):
+        print(database.getClassCredits([temp[i].split(" ")[10].split("\n")[0],target]))
+        primaryCredits += database.getClassCredits([temp[i].split(" ")[10].split("\n")[0],target])
+    for j in range(len(temp2)):
+        #print(database.getClassCredits([temp2[j].split(" ")[10].split("\n")[0],target]))
+        electiveCredits += database.getClassCredits([temp2[j].split(" ")[10].split("\n")[0],target])
+    for k in range(len(temp3)):
+        print(database.getClassCredits([temp3[k].split(" ")[10].split("\n")[0],"通識核心"]))
+        GenCredits += database.getClassCredits([temp3[k].split(" ")[10].split("\n")[0],"通識核心"])
+    print(primaryCredits)
+    print(electiveCredits)
+    print(GenCredits)
+    print(data)
+    data += (primaryCredits, electiveCredits, 0, GenCredits, 0)
+    print(data)
     if len(data) > 0:
         res = {'content': data}
     else:
@@ -86,18 +88,6 @@ def ajaxSearchTeacher():
 @app.route('/teacher')
 def teacherPage():
     return render_template('teacher.html')
-
-
-@app.route('/ajax/feedback')
-def ajaxfeedback():
-    target1 = request.args.get('name')
-    target2 = request.args.get('comment')
-    database.feedback(target1, target2)
-    return ()
-
-@app.route('/feedback')
-def feedbackPage():
-    return render_template('feedback.html')
 
 
 @app.route('/')
