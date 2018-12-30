@@ -88,6 +88,18 @@ def teacherPage():
     return render_template('teacher.html')
 
 
+@app.route('/ajax/feedback')
+def ajaxfeedback():
+    target1 = request.args.get('name')
+    target2 = request.args.get('comment')
+    database.feedback(target1, target2)
+    return ()
+
+@app.route('/feedback')
+def feedbackPage():
+    return render_template('feedback.html')
+
+
 @app.route('/')
 def index():
     d = database.getDeptList()
