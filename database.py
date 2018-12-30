@@ -89,3 +89,19 @@ def searchTeacher(name):
             result_dict[elem[0]] = []
         result_dict[elem[0]].append(elem[1])
     return (result_dict)
+
+
+def feedback(name, comment):
+    name = clean(name)
+    if name == '':
+        return ()
+    temp = ''
+    temp = '\''+name+'\''+','+'\''+comment+'\''
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+
+    c.execute("INSERT INTO comments(teacher, description) VALUES ("+temp+")")
+    conn.commit()
+    conn.close()
+    return ()
+    
