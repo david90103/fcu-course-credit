@@ -90,18 +90,13 @@ def searchTeacher(name):
         result_dict[elem[0]].append(elem[1])
     return (result_dict)
 
-
-def feedback(name, comment):
-    name = clean(name)
-    if name == '':
-        return ()
-    temp = ''
-    temp = '\''+name+'\''+','+'\''+comment+'\''
+def getClassCredits(name):
     conn = sqlite3.connect('database.db')
     c = conn.cursor()
-
-    c.execute("INSERT INTO comments(teacher, description) VALUES ("+temp+")")
-    conn.commit()
+    if name[1] != "通識核心":
+        formatName = c.execute("select short from modifyName where long = ?",(name[1],)).fetchall()[0][0]
+        result = c.execute("select DISTINCT sub_credit from course where course.sub_name = ? and unit =?",(name[0],formatName)).fetchall()[0][0]
+    else:
+        result = c.execute("select DISTINCT sub_credit from course where course.sub_name = ?",(name[0],)).fetchall()[0][0]
     conn.close()
-    return ()
-    
+    return result
