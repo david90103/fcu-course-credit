@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+  <div class="row py-5 my-4"></div>
+  <div class=" text-center">
+    <h1>逢甲大學教師回饋</h1>
+    <div class="row input-group my-5 mx-auto w-75">
+      <input type="text" class="form-control" id="nameInput" placeholder="請輸入教師名稱">
+      <div class="input-group-append">
+        <button id="checkbtn" class="btn btn-outline-primary">確認</button>
+      </div>
+    </div>
+  </div>
+  <div class="row input-group my-5 mx-auto w-75">
+    <form>
+    <div class="form-group">
+      <label for="comment">Comment:</label>
+      <textarea class="form-control" rows="5"  cols="100" id="comment"></textarea>
+    </div>
+    </form>
+  </div>
+  
+  <div class="row py-5 my-5"></div>
+</div>
+<script>
+  $(function() {
+    
+    $("#checkbtn").click(() => {
+      $.ajax({
+        url: '/ajax/feedback',
+        data: {
+		  name: $('#nameInput').val(),
+          comment: $('#comment').val()
+        },
+      });
+    })
+  });
+</script>
+{% endblock content %}
