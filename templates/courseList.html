@@ -147,7 +147,7 @@
             for (let i = 0; i < data['content'].length; i++) {
               let exists = false;
               let content = data['content'][i][0];
-              var buttons = $('<button type="button" class="btn btn-outline-primary m-1" data-toggle="button" aria-pressed="false">' +
+              var buttons = $('<button type="button" class="btn btn-outline-primary m-1 Gen" data-toggle="button" aria-pressed="false">' +
                 content + '</button>');
               $('#resultClass').children('button').each((index, elem) => {
                 if ($(elem).text() === content) exists = true;
@@ -162,29 +162,34 @@
       let primary = [];
       let elective = [];
       let Gen = [];
-      $("table req01").each((i, elem) => {
+      $(".req01").each((i, elem) => {
         if ($(elem).attr("aria-pressed") === "true") {
           primary.push($(elem).text());
         }
       });
-      $("table req02").each((i, elem) => {
+      $(".req02").each((i, elem) => {
         if ($(elem).attr("aria-pressed") === "true") {
           primary.push($(elem).text());
         }
       });
-      $("table req03").each((i, elem) => {
+      $(".req03").each((i, elem) => {
         if ($(elem).attr("aria-pressed") === "true") {
           primary.push($(elem).text());
         }
       });
-      $("table req04").each((i, elem) => {
+      $(".req04").each((i, elem) => {
         if ($(elem).attr("aria-pressed") === "true") {
           primary.push($(elem).text());
         }
       });
-      $("table Gen").each((i, elem) => {
+      $(".Gen").each((i, elem) => {
         if ($(elem).attr("aria-pressed") === "true") {
           Gen.push($(elem).text());
+        }
+      });
+      $(".elective").each((i, elem) => {
+        if ($(elem).attr("aria-pressed") === "true") {
+          elective.push($(elem).text());
         }
       });
       console.log(primary)
@@ -225,7 +230,7 @@
         labels: ["必修", "選修", "外系學分", "通識必修", "通識選修"],
         datasets: [{
           label: '已修習',
-          data: [1, 1, 1, 1, 1], // TODO: input data
+          data: [grad_credits[5] - 1, grad_credits[6] - 1, grad_credits[7] - 1, grad_credits[8] - 1, grad_credits[9] - 1], // TODO: input data
           backgroundColor: "rgba(54, 162, 235, 0.6)"
         }, {
           label: '畢業學分',
