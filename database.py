@@ -100,3 +100,16 @@ def getClassCredits(name):
         result = c.execute("select DISTINCT sub_credit from course where course.sub_name = ?",(name[0],)).fetchall()[0][0]
     conn.close()
     return result
+def feedback(name, comment):
+    name = clean(name)
+    if name == '':
+        return ()
+    temp = ''
+    temp = '\''+name+'\''+','+'\''+comment+'\''
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+
+    c.execute("INSERT INTO comments(teacher, description) VALUES ("+temp+")")
+    conn.commit()
+    conn.close()
+    return ()
