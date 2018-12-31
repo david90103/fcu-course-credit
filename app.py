@@ -109,6 +109,16 @@ def index():
     d = database.getDeptList()
     return render_template('index.html', data=d)
 
+@app.route('/ajax/feedback')
+def ajaxfeedback():
+    target1 = request.args.get('name')
+    target2 = request.args.get('comment')
+    database.feedback(target1, target2)
+    return ()
+
+@app.route('/feedback')
+def feedbackPage():
+    return render_template('feedback.html')
 
 if __name__ == "__main__":
     app.run()
