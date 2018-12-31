@@ -43,6 +43,11 @@ def ajaxFindClass():
 
 @app.route('/ajax/getCredits')
 def ajaxGetCredits():
+    exception = ["服務學習","資訊素養作業一：資料蒐集報告","資訊素養作業二：危機處理分析",
+                 "資訊素養作業三：資訊理論簡測","資訊素養作業四：實際參訪報告","資訊素養作業五：自我介紹檔案",
+                 "資訊素養作業六：電子書編寫","公民參與","多元文化","社會實踐","創意思考","體育(一)","體育(二)","英文(一)初級",
+                 "英文(一)中級","英文(一)中高級","英文(二)初級","英文(二)中級","英文(二)中高級","大學國文(一)","大學國文(二)",
+                 "全民國防教育軍事訓練(一)","全民國防教育軍事訓練(二)","英文能力檢定",""]
     target = request.args.get('name')
     data = database.getUnitCredits(target)
     
@@ -53,14 +58,23 @@ def ajaxGetCredits():
     electiveCredits = 0
     GenCredits = 0
     for i in range(len(temp)):
-        print(database.getClassCredits([temp[i].split(" ")[10].split("\n")[0],target]))
-        primaryCredits += database.getClassCredits([temp[i].split(" ")[10].split("\n")[0],target])
+        
+        if temp[i].split(" ")[10].split("\n")[0] in exception:
+            print(temp[i].split(" ")[10].split("\n")[0]+"通識核心")
+            print(database.getClassCredits([temp[i].split(" ")[10].split("\n")[0],target,"通識核心"]))
+            GenCredits += database.getClassCredits([temp[i].split(" ")[10].split("\n")[0],target ,"通識核心"])
+        else:
+            print(temp[i].split(" ")[10].split("\n")[0]+"必修")
+            print(database.getClassCredits([temp[i].split(" ")[10].split("\n")[0],target,"必修"]))
+            primaryCredits += database.getClassCredits([temp[i].split(" ")[10].split("\n")[0],target,"必修"])
     for j in range(len(temp2)):
-        #print(database.getClassCredits([temp2[j].split(" ")[10].split("\n")[0],target]))
-        electiveCredits += database.getClassCredits([temp2[j].split(" ")[10].split("\n")[0],target])
+        print(temp2[j].split(" ")[10].split("\n")[0]+"選修")
+        print(database.getClassCredits([temp2[j].split(" ")[10].split("\n")[0],target,"選修"]))
+        electiveCredits += database.getClassCredits([temp2[j].split(" ")[10].split("\n")[0],target,"選修"])
     for k in range(len(temp3)):
-        print(database.getClassCredits([temp3[k].split(" ")[10].split("\n")[0],"通識核心"]))
-        GenCredits += database.getClassCredits([temp3[k].split(" ")[10].split("\n")[0],"通識核心"])
+        print(temp3[k].split(" ")[10].split("\n")[0]+"通識核心")
+        print(database.getClassCredits([temp3[k].split(" ")[10].split("\n")[0],target ,"通識核心"]))
+        GenCredits += database.getClassCredits([temp3[k].split(" ")[10].split("\n")[0],target ,"通識核心"])
     print(primaryCredits)
     print(electiveCredits)
     print(GenCredits)
