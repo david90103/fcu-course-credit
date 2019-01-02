@@ -4,36 +4,50 @@
   <div class="row py-5 my-4"></div>
   <div class=" text-center">
     <h1>逢甲大學教師回饋</h1>
-    <div class="row input-group my-5 mx-auto w-75">
-      <input type="text" class="form-control" id="nameInput" placeholder="請輸入教師名稱">
-      <div class="input-group-append">
-        <button id="checkbtn" class="btn btn-outline-primary">確認</button>
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 id="set" class="card-title"><strong>Comments</strong></h5>
+        <textarea class="card-text form-control" rows="5"  cols="100" id="comment"></textarea><hr/>
+        <button id="checkbtn" class="btn btn-outline-primary float-right btn-sm">加入評價</button>
       </div>
     </div>
-  </div>
-  <div class="row input-group my-5 mx-auto w-75">
-    <form>
-    <div class="form-group">
-      <label for="comment">Comment:</label>
-      <textarea class="form-control" rows="5"  cols="100" id="comment"></textarea>
-    </div>
-    </form>
-  </div>
-  
   <div class="row py-5 my-5"></div>
 </div>
 <script>
+  function getname() {
+    var url = window.location.search; //獲取url中"?"後的字串   
+       var theRequest = new Object();   
+       if (url.indexOf("?") != -1) {   
+          var str = url.substr(1);   
+          strs = str.split("&");   
+          for(var i = 0; i < strs.length; i ++) {   
+              //就是這句的問題
+             theRequest[strs[i].split("=")[0]]=decodeURI(strs[i].split("=")[1]); 
+             //之前用了unescape()
+             //會出現亂碼  
+          }   
+       }
+       console.log(theRequest);
+       return theRequest;
+  }
+
   $(function() {
-    
     $("#checkbtn").click(() => {
       $.ajax({
         url: '/ajax/feedback',
         data: {
-		  name: $('#nameInput').val(),
+		      name: getname().name,
           comment: $('#comment').val()
         },
       });
+      alert("Thank you!");
     })
+
+    /*$("#btn").click(() => {
+
+      $("strong").html(getname().name);
+    })*/
+
   });
 </script>
 {% endblock content %}

@@ -33,6 +33,7 @@
             temp += `<li>
                 <div class="card mb-3">
                   <div class="card-body">
+                    <button id="${name}" class="btn btn-outline-primary float-right btn-sm">加入評價</button>
                     <h5 class="card-title"><strong>${name}</strong></h5>`
             for (let c = 0; c < result[name].length; c++) {
               temp += `<p class="card-text">${result[name][c]}</p><hr/>`
@@ -40,6 +41,10 @@
             temp += `</div></div></li>`
           }
           $('#result').append(temp);
+          $(".float-right").click((event) => {
+            console.log(event.target.id);
+            window.location.href="/feedback?name=" +event.target.id;
+          });
         }
       });
     })
