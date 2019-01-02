@@ -69,6 +69,20 @@ def findGeneral(className):
     conn.close()
     return result
 
+def findOuter(className):
+    className = clean(className)
+    if className == '':
+        return ()
+    # generate target for like statement in sql
+    formatName = '%'
+    for c in list(className):
+        formatName += c + '%'
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+    result = c.execute("select distinct sub_name from course where sub_name like '%" + formatName + "%'").fetchall()
+    conn.close()
+    return result
+
 
 def searchTeacher(name):
     name = clean(name)

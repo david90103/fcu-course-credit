@@ -40,6 +40,16 @@ def ajaxFindClass():
         res = {'content': None}
     return json.dumps(res)
 
+@app.route('/ajax/findOuter')
+def ajaxFindOuter():
+    target = request.args.get('name')
+    data = database.findOuter(target)
+    if len(data) > 0:
+        res = {'content': data}
+    else:
+        res = {'content': None}
+    return json.dumps(res)
+
 
 @app.route('/ajax/getCredits')
 def ajaxGetCredits():
