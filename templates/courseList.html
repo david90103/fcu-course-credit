@@ -109,7 +109,25 @@
         </div>
       </td>
     </tr>
+
+    <tr class="row">
+      <th class="col-2">外系</th>
+      <td class="col-5">
+        <div class="row input-group my-1">
+          <input type="text" class="form-control" id="outerclassInput" placeholder="外系課程名稱">
+          <div class="input-group-append">
+            <button id="findouter" class="btn btn-outline-info mb-2">尋找課程</button>
+          </div>
+        </div>
+        <div class="row">
+          <div id="resultOuterClass">
+          </div>
+        </div>
+      </td>
+    </tr>
+
   </table>
+
   <div class="row text-center">
     <button class="btn btn-lg btn-success mx-auto m-3" id="chartBtn">統計學分</button>
   </div>
@@ -158,10 +176,37 @@
         }
       });
     });
+    
+    $('#findouter').on('click', () => {
+      $.ajax({
+        url: '/ajax/findOuterClass',
+        data: {
+          name: $("#outerclassInput").val()
+        },
+        success: (d) => {
+          let data = JSON.parse(d);
+          if (!data['content']) alert('查無課程!');
+          else {
+            for (let i = 0; i < data['content'].length; i++) {
+              let exists = false;
+              let content = data['content'][i][0];
+              var buttons = $('<button type="button" class="btn btn-outline-primary m-1 outer" data-toggle="button" aria-pressed="false">' +
+                content + '</button>');
+              $('#resultOuterClass').children('button').each((index, elem) => {
+                if ($(elem).text() === content) exists = true;
+              })
+              if (!exists) buttons.appendTo('#resultOuterClass');
+            }
+          }
+        }
+      });
+    });
+
     $("#chartBtn").click(() => {
       let primary = [];
       let elective = [];
       let Gen = [];
+      let outer = [];
       $(".req01").each((i, elem) => {
         if ($(elem).attr("aria-pressed") === "true") {
           primary.push($(elem).text());
@@ -188,6 +233,11 @@
         }
       });
       $(".elective").each((i, elem) => {
+        if ($(elem).attr("aria-pressed") === "true") {
+          elective.push($(elem).text());
+        }
+      });
+      $(".outer").each((i, elem) => {
         if ($(elem).attr("aria-pressed") === "true") {
           elective.push($(elem).text());
         }
