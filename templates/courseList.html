@@ -179,7 +179,7 @@
     
     $('#findouter').on('click', () => {
       $.ajax({
-        url: '/ajax/findOuterClass',
+        url: '/ajax/findOuter',
         data: {
           name: $("#outerclassInput").val()
         },
@@ -239,19 +239,17 @@
       });
       $(".outer").each((i, elem) => {
         if ($(elem).attr("aria-pressed") === "true") {
-          elective.push($(elem).text());
+          outer.push($(elem).text());
         }
       });
-      console.log(primary)
-      console.log(elective)
-      console.log(Gen)
       $.ajax({
         url: '/ajax/getCredits',
         data: {
           name: $('h2').text().split(' ')[0],
           primary: primary,
           elective: elective,
-          Gen: Gen
+          Gen: Gen,
+          outer: outer
         },
         success: (d) => {
           buildChart(JSON.parse(d)["content"].map(Number));
