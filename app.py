@@ -64,11 +64,14 @@ def ajaxGetCredits():
     temp = request.args.getlist('primary[]')
     temp2 = request.args.getlist('elective[]')
     temp3 = request.args.getlist('Gen[]')
+    temp4 = request.args.getlist('outer[]')
+    temp5 = request.args.getlist('Genelective[]')
     primaryCredits = 0
     electiveCredits = 0
     GenCredits = 0
+    outerCredits = 0
+    GenelectiveCredits = 0
     for i in range(len(temp)):
-        
         if temp[i].split(" ")[10].split("\n")[0] in exception:
             print(temp[i].split(" ")[10].split("\n")[0]+"通識核心")
             print(database.getClassCredits([temp[i].split(" ")[10].split("\n")[0],target,"通識核心"]))
@@ -85,11 +88,20 @@ def ajaxGetCredits():
         print(temp3[k].split(" ")[10].split("\n")[0]+"通識核心")
         print(database.getClassCredits([temp3[k].split(" ")[10].split("\n")[0],target ,"通識核心"]))
         GenCredits += database.getClassCredits([temp3[k].split(" ")[10].split("\n")[0],target ,"通識核心"])
+    for l in range(len(temp4)):
+        print(temp4[l]+"外系")
+        print(database.getClassCredits([temp4[l],target ,"外系"]))
+        outerCredits += database.getClassCredits([temp4[l],target ,"外系"])
+    for m in range(len(temp5)):
+        print(temp5[m]+"通識核心")
+        print(database.getClassCredits([temp5[m],target ,"通識核心"]))
+        GenelectiveCredits += database.getClassCredits([temp5[m],target ,"通識核心"])
+
     print(primaryCredits)
     print(electiveCredits)
     print(GenCredits)
     print(data)
-    data += (primaryCredits, electiveCredits, 0, GenCredits, 0)
+    data += (primaryCredits, electiveCredits, outerCredits, GenCredits, GenelectiveCredits)
     print(data)
     if len(data) > 0:
         res = {'content': data}
