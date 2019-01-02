@@ -142,5 +142,58 @@ def ajaxfeedback():
 def feedbackPage():
     return render_template('feedback.html')
 
+@app.route('/ajax/getLoginCredit')
+def ajaxgetLoginCredit():
+    exception = ["服務學習","資訊素養作業一：資料蒐集報告","資訊素養作業二：危機處理分析",
+                 "資訊素養作業三：資訊理論簡測","資訊素養作業四：實際參訪報告","資訊素養作業五：自我介紹檔案",
+                 "資訊素養作業六：電子書編寫","公民參與","多元文化","社會實踐","創意思考","體育(一)","體育(二)","英文(一)初級",
+                 "英文(一)中級","英文(一)中高級","英文(二)初級","英文(二)中級","英文(二)中高級","大學國文(一)","大學國文(二)",
+                 "全民國防教育軍事訓練(一)","全民國防教育軍事訓練(二)","英文能力檢定",""]
+    target = request.args.get('name')
+    data = database.getUnitCredits(target)
+    print(target)
+    temp = request.args.getlist('primary[]')
+    temp2 = request.args.getlist('elective[]')
+    temp3 = request.args.getlist('Gen[]')
+    temp4 = request.args.getlist('outer[]')
+    temp5 = request.args.getlist('Genelective[]')
+    primaryCredits = 0
+    electiveCredits = 0
+    GenCredits = 0
+    outerCredits = 0
+    GenelectiveCredits = 0
+    for i in range(len(temp)):
+        print(temp[i]+"必修")
+        print(database.getClassCredits([temp[i],target,"必修"]))
+        primaryCredits += database.getClassCredits([temp[i],target,"必修"])
+    for j in range(len(temp2)):
+        print(temp2[j]+"選修")
+        print(database.getClassCredits([temp2[j],target,"選修"]))
+        electiveCredits += database.getClassCredits([temp2[j],target,"選修"])
+    for k in range(len(temp3)):
+        print(temp3[k]+"通識核心")
+        print(database.getClassCredits([temp3[k],target ,"通識核心"]))
+        GenCredits += database.getClassCredits([temp3[k],target ,"通識核心"])
+    for l in range(len(temp4)):
+        print(temp4[l]+"外系")
+        print(database.getClassCredits([temp4[l],target ,"外系"]))
+        outerCredits += database.getClassCredits([temp4[l],target ,"外系"])
+    for m in range(len(temp5)):
+        print(temp5[m]+"通識核心")
+        print(database.getClassCredits([temp5[m],target ,"通識核心"]))
+        GenelectiveCredits += database.getClassCredits([temp5[m],target ,"通識核心"])
+
+    print(primaryCredits)
+    print(electiveCredits)
+    print(GenCredits)
+    print(data)
+    data += (primaryCredits, electiveCredits, outerCredits, GenCredits, GenelectiveCredits)
+    print(data)
+    if len(data) > 0:
+        res = {'content': data}
+    else:
+        res = {'content': None}
+    return json.dumps(res)
+
 if __name__ == "__main__":
     app.run()

@@ -107,8 +107,9 @@ def searchTeacher(name):
 def getClassCredits(name):
     conn = sqlite3.connect('database.db')
     c = conn.cursor()
-    if name[2] != "通識核心" and name[2] != "外系":
+        if name[2] != "通識核心" and name[2] != "外系":
         formatName = c.execute("select short from modifyName where long = ?",(name[1],)).fetchall()[0][0]
+        print(formatName)
         result = c.execute("select DISTINCT sub_credit from course where course.sub_name = ? and unit =? and scj_scr_mso =?",(name[0],formatName,name[2])).fetchall()[0][0]
     else:
         result = c.execute("select DISTINCT sub_credit from course where course.sub_name = ?",(name[0],)).fetchall()[0][0]
