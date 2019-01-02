@@ -165,7 +165,7 @@
             for (let i = 0; i < data['content'].length; i++) {
               let exists = false;
               let content = data['content'][i][0];
-              var buttons = $('<button type="button" class="btn btn-outline-primary m-1 Gen" data-toggle="button" aria-pressed="false">' +
+              var buttons = $('<button type="button" class="btn btn-outline-primary m-1 Genelective" data-toggle="button" aria-pressed="false">' +
                 content + '</button>');
               $('#resultClass').children('button').each((index, elem) => {
                 if ($(elem).text() === content) exists = true;
@@ -207,6 +207,7 @@
       let elective = [];
       let Gen = [];
       let outer = [];
+      let Genelective = [];
       $(".req01").each((i, elem) => {
         if ($(elem).attr("aria-pressed") === "true") {
           primary.push($(elem).text());
@@ -242,6 +243,14 @@
           outer.push($(elem).text());
         }
       });
+      $(".Genelective").each((i, elem) => {
+        if ($(elem).attr("aria-pressed") === "true") {
+          Genelective.push($(elem).text());
+        }
+      });
+      console.log(elective);
+      console.log(outer);
+      console.log(Genelective);
       $.ajax({
         url: '/ajax/getCredits',
         data: {
@@ -249,7 +258,8 @@
           primary: primary,
           elective: elective,
           Gen: Gen,
-          outer: outer
+          outer: outer,
+          Genelective : Genelective 
         },
         success: (d) => {
           buildChart(JSON.parse(d)["content"].map(Number));

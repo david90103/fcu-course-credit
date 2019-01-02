@@ -12,73 +12,69 @@
     </div>
     <div class="card-body m-2 row">
       {% for course in data[courseType] %}
-      <p class="card-text mx-2" points="{{ course[1] }}">{{ course[0] }}</p>
+      <p class="card-text mx-2 {{ courseType }}" points="{{ course[1] }}">{{ course[0] }}</p>
       {% endfor %}
     </div>
   </div>
   {% endfor %}
+  <div class="row text-center">
+    <button class="btn btn-lg btn-success mx-auto m-3" id="chartBtn">統計學分</button>
+  </div>
 
 
 
   <script>
     $(function() {
-      $("#selectAll01").cpck(() => {
-        $(".req01").cpck();
+      $("#chartBtn").click(() => {
+      let primary = [];
+      let elective = [];
+      let Gen = [];
+      let Genelective = [];
+      let outer = [];
+      $(".院系必修").each((i, elem) => {
+        if ($(elem).attr("aria-pressed") === "true") {
+          primary.push($(elem).text());
+        }
       });
-      $("#selectAll02").cpck(() => {
-        $(".req02").cpck();
+      $(".通識基礎").each((i, elem) => {
+        if ($(elem).attr("aria-pressed") === "true") {
+          Gen.push($(elem).text());
+        }
       });
-      $("#selectAll03").cpck(() => {
-        $(".req03").cpck();
+      $(".本系專業選修").each((i, elem) => {
+        if ($(elem).attr("aria-pressed") === "true") {
+          elective.push($(elem).text());
+        }
       });
-      $("#selectAll04").cpck(() => {
-        $(".req04").cpck();
+      $(".非本系專業選修").each((i, elem) => {
+        if ($(elem).attr("aria-pressed") === "true") {
+          outer.push($(elem).text());
+        }
       });
-      $('#findbtn').on('cpck', () => {
-        $.ajax({
-          url: '/ajax/findClass',
-          data: {
-            name: $("#classInput").val()
-          },
-          success: (d) => {
-            let data = JSON.parse(d);
-            if (!data['content']) alert('查無課程!');
-            else {
-              for (let i = 0; i < data['content'].length; i++) {
-                let exists = false;
-                let content = data['content'][i][0];
-                var buttons = $('<button type="button" class="btn btn-outpne-primary m-1" data-toggle="button" aria-pressed="false">' +
-                  content + '</button>');
-                $('#resultClass').children('button').each((index, elem) => {
-                  if ($(elem).text() === content) exists = true;
-                })
-                if (!exists) buttons.appendTo('#resultClass');
-              }
-            }
-          }
-        });
+      $(".通識選修").each((i, elem) => {
+        if ($(elem).attr("aria-pressed") === "true") {
+          Genelective.push($(elem).text());
+        }
       });
-      $("#chartBtn").cpck(() => {
-        let classes = [];
-        $(".table button").each((i, elem) => {
-          if ($(elem).attr("aria-pressed") === "true") {
-            classes.push($(elem).text());
-          }
-        });
-        $.ajax({
-          url: '/ajax/getCredits',
-          data: {
-            name: $('h2').text().split(' ')[0]
-          },
-          success: (d) => {
-            buildChart(JSON.parse(d)["content"].map(Number));
-            $.smoothScroll({
-              scrollTarget: '#chart',
-              offset: -150
-            });
-          }
-        });
+      $.ajax({
+        url: '/ajax/getCredits',
+        data: {
+          name: "資訊工程學系",//錯誤，找不到解決辦法中
+          primary: primary,
+          elective: elective,
+          Gen: Gen,
+          outer: outer,
+          Genelective: Genelective
+        },
+        success: (d) => {
+          buildChart(JSON.parse(d)["content"].map(Number));
+          $.smoothScroll({
+            scrollTarget: '#chart',
+            offset: -150
+          });
+        }
       });
+    });
     });
   </script>
 
@@ -97,7 +93,7 @@
           labels: ["必修", "選修", "外系學分", "通識必修", "通識選修"],
           datasets: [{
             label: '已修習',
-            data: [1, 1, 1, 1, 1], // TODO: input data
+            data: [grad_credits[5], grad_credits[6], grad_credits[7], grad_credits[8], grad_credits[9]], // TODO: input data
             backgroundColor: "rgba(54, 162, 235, 0.6)"
           }, {
             label: '畢業學分',
