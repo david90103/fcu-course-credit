@@ -136,7 +136,7 @@ def ajaxfeedback():
     target1 = request.args.get('name')
     target2 = request.args.get('comment')
     database.feedback(target1, target2)
-    return ()
+    return json.dumps("")
 
 @app.route('/feedback')
 def feedbackPage():
