@@ -9,7 +9,11 @@ app = Flask(__name__)
 @app.route('/nidLogin', methods=['POST'])
 def nidLogin():
     result = worm(request.form.get('nid_acc', None), request.form.get('nid_pwd', None))
-    return render_template('nidresult.html', data=database.nidGetCridits(result))
+    if result == {}:
+        data = result
+        return render_template('error.html')
+    else:
+        return render_template('nidresult.html', data=database.nidGetCridits(result))
 
 
 @app.route('/getClassList', methods=['GET'])

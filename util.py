@@ -12,9 +12,12 @@ def worm(acc, pas):
     account.send_keys(acc)
     password = browser.find_element_by_id("ctl00_ucLogin_txtPW")
     password.send_keys(pas)
-
+    
     btn = browser.find_element_by_id("ctl00_ucLogin_btnLogin").click()
-    btn = browser.find_element_by_id("li_LearnAssist").click()
+    try:
+        btn = browser.find_element_by_id("li_LearnAssist").click()
+    except:
+        return {}
     btn = browser.find_element_by_xpath("//*[@id=\"ctl00_Div_LearnAssist\"]/ul/li[11]/a").click()
 
     answer = {"通識基礎": [],
