@@ -2,17 +2,19 @@
 {% block content %}
 <div class="container">
   <div class="row py-5 my-4"></div>
-  <div class=" text-center">
-    <h1>逢甲大學教師回饋</h1>
+    <h1 class="text-center">逢甲大學教師回饋</h1>
     <div class="card mb-3">
       <div class="card-body">
-        <h5 id="set" class="card-title"><strong>Comments</strong></h5>
+        <strong>教師姓名：</strong>
+        <strong id="teacherName"></strong>
+        <hr/>
+        <strong>Comments</strong>
+        <br/>
         <textarea class="card-text form-control" rows="5"  cols="100" id="comment"></textarea><hr/>
         <button id="checkbtn" class="btn btn-outline-primary float-right btn-sm">加入評價</button>
       </div>
     </div>
   <div class="row py-5 my-5"></div>
-</div>
 <script>
   function getname() {
     var url = window.location.search; //獲取url中"?"後的字串   
@@ -32,6 +34,7 @@
   }
 
   $(function() {
+    $("#teacherName").text(getname().name);
     $("#checkbtn").click(() => {
       $.ajax({
         url: '/ajax/feedback',
