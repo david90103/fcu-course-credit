@@ -22,6 +22,7 @@
       <button id="submit" class="form-control btn btn-outline-primary">NID登入</button>
     </div>
   </form>
+  <img src="static/image/loading.gif" width="50" class="row mx-auto" id="loading"></img>
   <div class="row" id="unitTable">
     {% for key, value in data.items() %}
     <div class="card m-2 row">
@@ -41,11 +42,15 @@
 </div>
 <script>
   $(function() {
+    $("#loading").hide();
     jQuery.expr[':'].regex = function(elem, index, match) {
       var regex = new RegExp(match[3]),
         $elem = $(elem);
       return regex.test($elem.attr('class')) || regex.test($elem.attr('id'));
     };
+    $("#submit").click(() => {
+      $("#loading").show();
+    });
     $("#findbtn").click(() => {
       let temp = $("#unitInput").val();
       let target = ".*";
