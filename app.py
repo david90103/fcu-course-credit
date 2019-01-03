@@ -20,19 +20,21 @@ def nidLogin():
 def getClassList():
     required = [[], [], [], [], []]
     elective = [[], [], [], [], []]
-    for c in database.getClassList(request.args.get('unit')):
-        if c[4] > 4:
-            if c[2] == '必修':
-                required[0].append(c[0])
+    try:
+        for c in database.getClassList(request.args.get('unit')):
+            if c[4] > 4:
+                if c[2] == '必修':
+                    required[0].append(c[0])
+                else:
+                    elective[0].append(c[0])
             else:
-                elective[0].append(c[0])
-        else:
-            if c[2] == '必修':
-                required[c[4]].append(c[0])
-            else:
-                elective[c[4]].append(c[0])
-    return render_template('courseList.html', data=[required, elective], dept=request.args.get('unit'))
-
+                if c[2] == '必修':
+                    required[c[4]].append(c[0])
+                else:
+                    elective[c[4]].append(c[0])
+        return render_template('courseList.html', data=[required, elective], dept=request.args.get('unit'))
+    except:
+        return render_template('error2.html')
 
 @app.route('/ajax/findClass')
 def ajaxFindClass():
